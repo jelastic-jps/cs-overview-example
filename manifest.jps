@@ -1,9 +1,6 @@
 {
     "type": "install",
     "name": "Advanced Payara Micro Cluster",
-    "homepage": "https://github.com/jelastic-jps/payara/tree/master/payara-micro-cluster-advanced",
-    "logo": "https://raw.githubusercontent.com/jelastic-jps/payara/master/images/70.png",
-    "description": "The package automatically provisions Payara Micro cluster, installs autoscaling triggers, mounts storage container, deploys application war and adds load balancing layer.",
     "nodes": [{
         "count": 1,
         "cloudlets": 16,
@@ -19,7 +16,6 @@
             "/var/log"
         ]
     }],
-    "baseUrl": "https://github.com/jelastic-jps/payara/raw/master/addons",
     "onInstall": [{
         "forEach(nodes.cp)": {
             "updateNodes": {
@@ -53,5 +49,9 @@
             "cmd[cp]": "$PAYARA_PATH/bin/clusterManager.sh --${this.option}host ${this.ip}"
         }
     },
-    "success": "TODO: Put markdown text here + add markdown syntaxis to the docs"
+    "success": "TODO: Put markdown text here + add markdown syntaxis to the docs",
+    "baseUrl": "https://github.com/jelastic-jps/payara/raw/master/addons",
+    "logo": "https://raw.githubusercontent.com/jelastic-jps/payara/master/images/70.png",
+    "description": "Example: The package automatically provisions Payara Micro cluster, mounts storage container and deploys test war applications.",
+    "homepage": "http://docs.cloudscripting.com/"
 }
