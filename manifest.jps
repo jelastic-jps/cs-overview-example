@@ -1,0 +1,57 @@
+{
+    "type": "install",
+    "name": "Advanced Payara Micro Cluster",
+    "homepage": "https://github.com/jelastic-jps/payara/tree/master/payara-micro-cluster-advanced",
+    "logo": "https://raw.githubusercontent.com/jelastic-jps/payara/master/images/70.png",
+    "description": "The package automatically provisions Payara Micro cluster, installs autoscaling triggers, mounts storage container, deploys application war and adds load balancing layer.",
+    "nodes": [{
+        "count": 1,
+        "cloudlets": 16,
+        "nodeGroup": "cp",
+        "image": "jelastic/payara-micro-cluster",
+        "env": {
+            "HAZELCAST_GROUP": "${fn.uuid}",
+            "HAZELCAST_PASSWORD": "${fn.password}"
+        },
+        "volumes": [
+            "/opt/payara/deployments",
+            "/opt/payara/config",
+            "/var/log"
+        ]
+    }],
+    "baseUrl": "https://github.com/jelastic-jps/payara/raw/master/addons",
+    "onInstall": [{
+        "forEach(nodes.cp)": {
+            "updateNodes": {
+                "option": "add",
+                "ip": "${@i.intIP}"
+            }
+        }
+    }, {
+        "install": {
+            "jps": "${baseUrl}/application-storage/manifest.jps"
+        }
+    }],
+    "onAfterScaleOut[cp]": {
+        "forEach(event.response.nodes)": {
+            "updateNodes": {
+                "option": "add",
+                "ip": "${@i.intIP}"
+            }
+        }
+    },
+    "onAfterScaleIn[cp]": {
+        "forEach(event.response.nodes)": {
+            "updateNodes": {
+                "option": "remove",
+                "ip": "${@i.intIP}"
+            }
+        }
+    },
+    "actions": {
+        "updateNodes": {
+            "cmd[cp]": "$PAYARA_PATH/bin/clusterManager.sh --${this.option}host ${this.ip}"
+        }
+    },
+    "success": "TODO: Put markdown text here + add markdown syntaxis to the docs"
+}
