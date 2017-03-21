@@ -1,8 +1,7 @@
 {
     "type": "install",
     "name": "Advanced Payara Micro Cluster",
-    "nodes": [{
-        "count": 1,
+    "nodes": {
         "cloudlets": 16,
         "nodeGroup": "cp",
         "image": "jelastic/payara-micro-cluster",
@@ -15,7 +14,7 @@
             "/opt/payara/config",
             "/var/log"
         ]
-    }],
+    },
     "onInstall": [{
         "forEach(nodes.cp)": {
             "updateNodes": {
